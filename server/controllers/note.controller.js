@@ -30,3 +30,38 @@ export function addNote(req, res) {
       });
   });
 }
+
+export function getNotes(req, res) {
+  Note.find().exec((err, notes) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.json({notes});
+  });
+}
+
+export function deleteNote(req, res) {
+  Note.findOne({ id: req.params.noteId }).exec((err, note) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    note.remove(() => {
+      res.status(200).end();
+    });
+  });
+}
+
+export function editNote(req, res) {
+	Note.findOne({ id: req.params.noteId }).exec((err, lane) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+        note.tast = req.body.note.task;
+        note.save((err, saved) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.json(saved);
+        });
+    });
+}
